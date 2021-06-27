@@ -1,4 +1,5 @@
 import { Application,send } from "https://deno.land/x/oak@v7.6.3/mod.ts"
+import api from "./api.ts"
 
 const app = new Application()
 const PORT = 8000
@@ -17,6 +18,9 @@ app.use(async(ctx,next)=>{
   ctx.response.headers.set("X-response-time", `${delta}ms`)
 })
 
+app.use(api.routes())
+app.use(api.allowedMethods())
+
 app.use(async(ctx)=>{
   const filePath = ctx.request.url.pathname
   const fileWhitelist=[
@@ -32,9 +36,7 @@ app.use(async(ctx)=>{
   }
 })
 
-app.use((ctx)=>{
-  ctx.response.body = `Hello NASA`
-})
+
 
 if(import.meta.main){
  await app.listen({
