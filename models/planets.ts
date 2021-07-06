@@ -6,6 +6,18 @@ import * as _ from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
 type Plant =  Record<string,string>
 let planets: Array<Plant>
 
+export function filterHabitablePlanets(planets: Array<Plant>) {
+  return planets.filter((plant) => {
+    const plantRadius = Number(plant["koi_prad"]);
+    const stellarMass = Number(plant["koi_smass"]);
+    const stellarRadius = Number(plant["koi_srad"]);
+
+    return plant["koi_disposition"] === "CONFIRMED" && plantRadius > 0.5 &&
+      plantRadius < 1.5 && stellarMass > 0.78 && stellarMass < 1.04 &&
+      stellarRadius > 0.99 && stellarRadius < 1.01;
+  })
+}
+
 async function loadPlanetsData() {
   const path = join("data", "kepler_exoplanets_nasa.csv");
 
@@ -17,15 +29,7 @@ async function loadPlanetsData() {
   });
   Deno.close(file.rid);
 
-  const plants = (result as Array<Plant>).filter((plant) => {
-    const plantRadius = Number(plant["koi_prad"]);
-    const stellarMass = Number(plant["koi_smass"]);
-    const stellarRadius = Number(plant["koi_srad"]);
-
-    return plant["koi_disposition"] === "CONFIRMED" && plantRadius > 0.5 &&
-      plantRadius < 1.5 && stellarMass > 0.78 && stellarMass < 1.04 &&
-      stellarRadius > 0.99 && stellarRadius < 1.01;
-  });
+  const plants = filterHabitablePlanets(result as Array<Plant>);
 
   return plants.map((plant) => {
     return _.pick(plant, [
