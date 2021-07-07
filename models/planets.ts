@@ -1,8 +1,6 @@
-import { join } from "https://deno.land/std@0.99.0/path/mod.ts";
-import { BufReader } from "https://deno.land/std@0.99.0/io/bufio.ts";
-import { parse } from "https://deno.land/std@0.99.0/encoding/csv.ts";
-import * as _ from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
-import * as log from "https://deno.land/std@0.99.0/log/mod.ts"
+import { log,join, BufReader, parse, pick } from "../deps.ts";
+
+
 
 type Plant =  Record<string,string>
 let planets: Array<Plant>
@@ -33,7 +31,7 @@ async function loadPlanetsData() {
   const plants = filterHabitablePlanets(result as Array<Plant>);
 
   return plants.map((plant) => {
-    return _.pick(plant, [
+    return pick(plant, [
       "koi_prad",
       "koi_smass",
       "koi_srad",
