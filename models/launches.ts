@@ -77,7 +77,16 @@ export function getOne(id:number) {
   return null
 }
 
-export function addOne(data: Launch){
+export function removeOne(id:number) {
+  const aborted = launches.get(id)
+  if(aborted){
+    aborted.upcoming = false
+    aborted.success = false
+  }
+  return aborted
+}
+
+export function addOne(data: Launch) {
   launches.set(data.flightNumber, Object.assign(data,{
     upcoming:true,
     customers:["tonyfang", "NASA", "Zero to Master"]
