@@ -2,6 +2,7 @@ import { join } from "https://deno.land/std@0.99.0/path/mod.ts";
 import { BufReader } from "https://deno.land/std@0.99.0/io/bufio.ts";
 import { parse } from "https://deno.land/std@0.99.0/encoding/csv.ts";
 import * as _ from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
+import * as log from "https://deno.land/std@0.99.0/log/mod.ts"
 
 type Plant =  Record<string,string>
 let planets: Array<Plant>
@@ -42,7 +43,7 @@ async function loadPlanetsData() {
 }
 
 planets = await loadPlanetsData();
-console.log(`It has ${planets.length} plant we can live in!`);
+log.info(`It has ${planets.length} plant we can live in!`);
 
 export function getAllPlanets(){
   return planets
