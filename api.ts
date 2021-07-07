@@ -28,4 +28,12 @@ router.get("/launches/:id", (ctx) => {
   }
 })
 
+router.post("/launches", async(ctx)=>{
+  const body = await ctx.request.body().value
+  launches.addOne(body)
+
+  ctx.response.body = {success:true}
+  ctx.response.status = 201
+})
+
 export default router
